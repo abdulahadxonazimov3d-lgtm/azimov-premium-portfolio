@@ -1,0 +1,8 @@
+const body=document.body,themeBtn=document.getElementById('themeBtn'),menuBtn=document.getElementById('menuBtn'),navlinks=document.getElementById('navlinks');
+const saved=localStorage.getItem('theme'); if(saved){body.className=saved} themeBtn.onclick=()=>{body.classList.toggle('light'); body.classList.toggle('dark'); localStorage.setItem('theme',body.classList.contains('light')?'light':'dark')};
+menuBtn.onclick=()=>navlinks.classList.toggle('open'); document.querySelectorAll('.navlinks a').forEach(a=>a.onclick=()=>navlinks.classList.remove('open'));
+document.getElementById('year').textContent=new Date().getFullYear();
+const modal=document.getElementById('modal'),modalImg=document.getElementById('modalImg'),modalTitle=document.getElementById('modalTitle');
+document.querySelectorAll('.zoomable').forEach(img=>img.addEventListener('click',()=>{modalImg.src=img.src;modalTitle.textContent=img.alt;modal.classList.add('active')}));
+document.getElementById('closeModal').onclick=()=>modal.classList.remove('active');modal.onclick=e=>{if(e.target===modal)modal.classList.remove('active')};
+document.getElementById('contactForm').addEventListener('submit',async(e)=>{e.preventDefault();const status=document.getElementById('formStatus');status.textContent='Yuborilmoqda...';const data=Object.fromEntries(new FormData(e.target));try{const res=await fetch('/.netlify/functions/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const json=await res.json();if(!res.ok)throw new Error(json.error||'Xatolik');status.textContent='Xabar yuborildi.';e.target.reset()}catch(err){status.textContent='Xabar yuborilmadi. Telegram sozlamalarini tekshiring.'}});
